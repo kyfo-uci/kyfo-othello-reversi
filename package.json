@@ -1,0 +1,30 @@
+{
+  "name": "kyfo-othello-themed-reversi",
+  "version": "0.0.1",
+  "description": "kyfo's othello reversi for 285",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kyfo-uci/kyfo-othello-reversi.git"
+  },
+  "keywords": [
+    "kyfo",
+    "othello",
+    "reversi",
+    "mhcid",
+    "uci"
+  ],
+  "author": "Kylin Follenweider",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/kyfo-uci/kyfo-othello-reversi/issues"
+  },
+  "homepage": "https://github.com/kyfo-uci/kyfo-othello-reversi#readme",
+  "dependencies": {
+    "node-static": "^0.7.11",
+    "socket.io": "^4.0.2"
+  }
+}
