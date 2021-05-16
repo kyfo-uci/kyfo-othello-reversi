@@ -14,8 +14,8 @@
     </style>
     <script>
       function goToLobby(){
-        let userName = $('#nameInput').val();
-        window.location.href = "lobby.html?username=" + userName;
+        let username = encodeURI($('#nameInput').val());
+        window.location.href = "lobby.html?username="+username;
       }
     </script>
     <title>KyFo's Reversi</title>
@@ -44,7 +44,7 @@
           <div class = 'input-group'>
             <span class = 'input-group-text' id="displayName">Name</span>
             <input type='text' class = 'form-control text-nowrap' id="nameInput" placeholder="Choose your display name" aria-label="Enter your display now for use while playing KyFo's Reversi" aria-describedby="displayName"/>
-            <button type='submit' class='btn btn-primary text-nowrap' id="lobbyButton" onClick="goToLobby()">Enter Lobby</button>
+            <button type='submit' class='btn btn-primary text-nowrap' id="lobbyButton" onclick="goToLobby()">Enter Lobby</button>
           </div>
         </div>
       </div>

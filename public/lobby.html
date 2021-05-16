@@ -11,7 +11,15 @@
     <style>
       .headerrow {
         background-color: #660000;
-        color: whitesmoke;
+        color: rgb(245, 245, 245);
+      }
+      .join_room_response{
+        background-color: #ffecec;
+        margin: 1px 1px 1px 10px;
+      }
+      .chat_message{
+        font-size: 125%;
+        color: #660000;
       }
     </style>
 
@@ -30,6 +38,14 @@
     <!-- Row 2 Messages  -->
       <div class = 'row m-3'>
         <div class = 'col'>
+          <div class = 'row align-items-center justify-content-center m-3'>
+            <div col class = 'col-8'>
+              <div class = 'input-group'>
+                <input type='text' class = 'form-control text-nowrap' id="chatMessage" placeholder="Enter your message here" aria-label="Enter your message to send to the chant room" />
+                <button type='submit' class='btn btn-primary text-nowrap' id="chatButton" onclick="sendChatMessage()">Send</button>
+              </div>
+            </div>
+          </div>
           <h4>Messages</h4>
           <div id="messages">
           </div>
@@ -42,6 +58,8 @@
     <!-- 3.x jQuery from https://developers.google.com/speed/libraries#jquery with SRI hash from https://www.srihash.org/ -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
 
+    <!-- Option 1: Cause lobby.html to have access to socket.io -->
+    <script src="https://cdn.socket.io/4.0.1/socket.io.min.js" integrity="sha384-LzhRnpGmQP+lOvWruF/lgkcqD+WDVt9fU3H4BWmwP5u5LTmkUGafMcpZKNObVMLU" crossorigin="anonymous"></script>
     <script src='assets/js/main.js'></script>
   </body>
 </html>
