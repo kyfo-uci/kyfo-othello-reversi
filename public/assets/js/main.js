@@ -48,7 +48,7 @@ function sendChatMessage(){
     request.username = username;
     request.message = $('#chatMessage').val();
         if ((typeof request.message == 'undefined') || (request.message === null) || (request.message === 'null') || (request.message === "")){
-            request.message = 'Silence is golden';
+            request.message = '"Demand me nothing: what you know, you know."';
         }
     console.log('**** Client log message, sending \'send_chat_message\' command: '+JSON.stringify(request));
     socket.emit('send_chat_message',request);
