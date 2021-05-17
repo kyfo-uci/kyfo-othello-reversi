@@ -12,7 +12,7 @@ function getIRIParameterValue(requestedKey){
 }
 
 let username = decodeURI(getIRIParameterValue('username'));
-if ((typeof username == 'undefined') || (username === null)){
+if ((typeof username == 'undefined') || (username === null) || (username === 'null') || (username === "")){
     username = 'Anonymous_'+Math.floor(Math.random()*1000);
 }
 
@@ -41,11 +41,15 @@ socket.on('join_room_response',(payload) =>{
 })
 
 /* Impliment functionality to send chat message */
+
 function sendChatMessage(){
     let request = {};
     request.room = chatRoom;
     request.username = username;
     request.message = $('#chatMessage').val();
+        if ((typeof request.message == 'undefined') || (request.message === null) || (request.message === 'null') || (request.message === "")){
+            request.message = 'Silence is golden';
+        }
     console.log('**** Client log message, sending \'send_chat_message\' command: '+JSON.stringify(request));
     socket.emit('send_chat_message',request);
 }
@@ -66,7 +70,7 @@ socket.on('send_chat_message_response',(payload) =>{
 /* Request to join the chat room  using jqery*/
 $( () => {
     let request = {};
-    request.room = chatRoom
+    request.room = chatRoom;
     request.username = username;
     console.log('**** Client log message, sending \'join_room\' command: '+JSON.stringify(request));
     socket.emit('join_room',request);
