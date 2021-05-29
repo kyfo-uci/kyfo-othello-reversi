@@ -186,7 +186,7 @@ socket.on('join_room_response',(payload) =>{
     nodeA.show('fade', 1000);
 
     /* Announcing in the chat someone has arrived */
-    let newHTML = '<p class=\'join_room_response\'>' +payload.username+' joined the '+payload.room+'. (There are '+payload.count+' users in this room).</p>';
+    let newHTML = '<p class=\'join_room_response\'>' +payload.username+' joined the chatrom. (There are '+payload.count+' users in this room).</p>';
     let newNode = $(newHTML);
     newNode.hide();
     $('#messages').prepend(newNode);
@@ -246,6 +246,92 @@ socket.on('send_chat_message_response',(payload) =>{
     $('#messages').prepend(newNode);
     newNode.show('fade', 500);
 })
+
+let old_board = [
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?'],
+    ['?', '?', '?', '?', '?', '?', '?', '?']
+];
+
+socket.on('game_update',(payload) =>{
+    if ((typeof payload == 'undefined') || (payload === null)){
+        console.log('Server did not send a payload');
+        return;
+    }
+    if (payload.result === 'fail'){
+        console.log(payload.message)
+        return;
+    }
+
+    let board = payload.game.board;
+    if ((typeof board == 'undefined') || (board === null)){
+        console.log('Server did not send a valid board to display');
+        return;
+    }
+
+    /* Update my color */
+
+    /* Animate changes to the board (nested loop)*/
+    for(let row = 0; row < 8; row++){
+        for(let column = 0; column < 8; column++){
+            /* Check to see if the server changed any space on the board */
+            if (old_board[row][column] !== board[row][column]){
+                let graphic = "";
+                let altTag = "";
+                if ((old_board[row][column] === '?') && (board[row][column] === ' ')){
+                graphic = 'kyfo-empty.gif';
+                altTag = 'empty space';
+                }
+                else if ((old_board[row][column] === '?') && (board[row][column] === 'w')){
+                    graphic = 'kyfo-empty_to_white.gif';
+                    altTag = 'white token';
+                }
+                else if ((old_board[row][column] === '?') && (board[row][column] === 'b')){
+                    graphic = 'kyfo-empty_to_black.gif';
+                    altTag = 'black token';
+                }
+                else if ((old_board[row][column] === ' ') && (board[row][column] === 'w')){
+                    graphic = 'kyfo-empty_to_white.gif';
+                    altTag = 'white token';
+                }
+                else if ((old_board[row][column] === ' ') && (board[row][column] === 'b')){
+                    graphic = 'kyfo-empty_to_black.gif';
+                    altTag = 'black token';
+                }
+                else if ((old_board[row][column] === 'w') && (board[row][column] === ' ')){
+                    graphic = 'kyfo-white_to_empty.gif';
+                    altTag = 'empty space';
+                }
+                else if ((old_board[row][column] === 'b') && (board[row][column] === ' ')){
+                    graphic = 'kyfo-black_to_empty.gif';
+                    altTag = 'empty space';
+                }
+                else if ((old_board[row][column] === 'b') && (board[row][column] === 'w')){
+                    graphic = 'kyfo-black-to-white1-iago-to-othello.gif';
+                    altTag = 'white token';
+                }
+                else if ((old_board[row][column] === 'w') && (board[row][column] === 'b')){
+                    graphic = 'kyfo-white-to-black1-othello-to-iago.gif';
+                    altTag = 'black token';
+                }
+                else {
+                    graphic = 'kyfo-error.gif';
+                    altTag = 'error';
+                }
+
+            const t = Date.now();
+            $('#'+ row + '_' + column).html('<img class="img-fluid" src="assets/images/' + graphic + '?time' + t + '" alt="' + altTag + '" />');
+            }
+        }
+    }
+    old_board = board;
+})
+
 
 /* Request to join the chat room  using jqery*/
 $( () => {
