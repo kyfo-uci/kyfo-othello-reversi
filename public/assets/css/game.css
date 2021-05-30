@@ -1,31 +1,47 @@
+
+/* Color Pallet */
+/*   
+  background-color Options
+    Dark red: #660000;
+    Teal: #4A8D84
+    Cream: #DAD6B5;
+    Salmon: #B85044
+    Slate: #12141D
+*/
+
 body {
-    background-color: #660000;
-    color: rgb(245, 245, 245);
-  }
+  background-color: #660000;
+  color: #DAD6B5;
+}
 
-  #messagePane,
-  .headerrow {
-    background-color: #ee9393;
-  }
+#messagePane,
+.headerrow {
+  background-color: #B85044;
+}
 
-  .join_room_response,
-  .left_room_response {
-    color: rgb(245, 245, 245);
-  }
+.join_room_response,
+.left_room_response {
+  color: #DAD6B5;
+}
 
-  .chat_message{
-    font-size: 125%;
-    color: #0a0a0a;
-  }
+.chat_message{
+  font-size: 125%;
+  color: #12141D;
+}
 
-  table#game_board{
-    border: 4px solid black;
-    margin: 0px;
-    padding: 0px;
-  }
+table#game_board{
+  border: 4px solid black;
+  background-color: #12141D;
+  margin: 0px;
+  padding: 0px;
+}
 
-  table#game_board td{
+table#game_board td{
   border: 1px solid black;
   margin: 0px;
   padding: 0px;
+}
+
+td.hovered_over:hover{
+  background-image: url('/assets/images/kyfo-hover.gif');
 }

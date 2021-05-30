@@ -258,6 +258,8 @@ let old_board = [
     ['?', '?', '?', '?', '?', '?', '?', '?']
 ];
 
+let my_color = "";
+
 socket.on('game_update',(payload) =>{
     if ((typeof payload == 'undefined') || (payload === null)){
         console.log('Server did not send a payload');
@@ -275,6 +277,18 @@ socket.on('game_update',(payload) =>{
     }
 
     /* Update my color */
+    if (socket.id === payload.game.player_white.socket) {
+        my_color = 'white';
+    }
+    else if (socket.id === payload.game.player_black.socket) {
+        my_color = 'black';
+    }
+    else {
+        window.location.href = 'lobby.html?username=' + username;
+        return;
+    }
+
+    $('#my_color').html('<h3 id="my_color">I am ' + my_color + '</h3');
 
     /* Animate changes to the board (nested loop)*/
     for(let row = 0; row < 8; row++){
@@ -284,7 +298,7 @@ socket.on('game_update',(payload) =>{
                 let graphic = "";
                 let altTag = "";
                 if ((old_board[row][column] === '?') && (board[row][column] === ' ')){
-                graphic = 'kyfo-empty.gif';
+                graphic = 'kyfo-transparent-empty.gif';
                 altTag = 'empty space';
                 }
                 else if ((old_board[row][column] === '?') && (board[row][column] === 'w')){
@@ -323,9 +337,13 @@ socket.on('game_update',(payload) =>{
                     graphic = 'kyfo-error.gif';
                     altTag = 'error';
                 }
+                const t = Date.now();
+                $('#'+ row + '_' + column).html('<img class="img-fluid" src="assets/images/' + graphic + '?time' + t + '" alt="' + altTag + '" />');
 
-            const t = Date.now();
-            $('#'+ row + '_' + column).html('<img class="img-fluid" src="assets/images/' + graphic + '?time' + t + '" alt="' + altTag + '" />');
+                $('#'+ row + '_' + column).off('click');
+                if (board[row][column] === ' '){
+                    $('#' + row + '_' + column).addClass('hovered_over');
+               }
             }
         }
     }
