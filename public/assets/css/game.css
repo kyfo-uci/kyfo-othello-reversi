@@ -45,3 +45,11 @@ table#game_board td{
 td.hovered_over:hover{
   background-image: url('/assets/images/kyfo-hover.gif');
 }
+
+.btn-danger{
+  background-color: #B85044;
+}
+
+.btn-primary{
+  background-color: #4A8D84;
+}
