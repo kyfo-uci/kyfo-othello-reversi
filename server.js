@@ -646,13 +646,13 @@ function send_game_update(socket, game_id, message){
                 /* Player does not have a color */
                 if (games[game_id].player_white.socket ===""){
                     /* This play should be white */
-                    console.log('White is assgined to: ' + second);
+                    console.log('White is assigned to: ' + second);
                     games[game_id].player_white.socket = second;
                     games[game_id].player_white.username = players[second].username;
                 }
                 else if (games[game_id].player_black.socket === ""){
                     /* This play should be black */
-                    console.log('Black is assgined to: ' + second);
+                    console.log('Black is assigned to: ' + second);
                     games[game_id].player_black.socket = second;
                     games[game_id].player_black.username = players[second].username;
                 }
@@ -673,5 +673,31 @@ function send_game_update(socket, game_id, message){
         io.of('/').to(game_id).emit('game_update', payload);
     })
 
-        /* Check if the game is over */
+    /* Check if the game is over */
+    let count = 0;
+    for (let row = 0; row < 8; row++) {
+        for (let column = 0; column < 8; column++) {
+            if (games[game_id].board[row][column] != ' '){
+              count++;  
+            }
+        }
+    }
+    if (count === 64) {
+        let payload = {
+            result: 'success',
+            game_id: game_id,
+            game: games[game_id],
+            who_won: 'everyone'
+        }
+        io.in(game_id).emit('game_over', payload);
+
+        /* Delete old games after one hour via javaScript closure*/
+        setTimeout(
+            ((id) =>{
+                return(() =>{
+                    delete game[id];
+                });
+            })(game_id), 60 * 60 * 1000
+        );
+    }
 }

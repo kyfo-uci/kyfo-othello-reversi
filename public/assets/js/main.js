@@ -186,7 +186,7 @@ socket.on('join_room_response',(payload) =>{
     nodeA.show('fade', 1000);
 
     /* Announcing in the chat someone has arrived */
-    let newHTML = '<p class=\'join_room_response\'>' +payload.username+' joined the chatrom. (There are '+payload.count+' users in this room).</p>';
+    let newHTML = '<p class=\'join_room_response\'>' +payload.username+' joined the chatroom. (There are '+payload.count+' users in this room).</p>';
     let newNode = $(newHTML);
     newNode.hide();
     $('#messages').prepend(newNode);
@@ -290,9 +290,19 @@ socket.on('game_update',(payload) =>{
 
     $('#my_color').html('<h3 id="my_color">I am ' + my_color + '</h3');
 
+    let whitesum = 0;
+    let blacksum = 0;
+
     /* Animate changes to the board (nested loop)*/
     for(let row = 0; row < 8; row++){
         for(let column = 0; column < 8; column++){
+            if (board[row][column] === 'w'){
+                whitesum++;
+            }
+            else if(board[row][column] === 'b'){
+                blacksum++;
+            }
+
             /* Check to see if the server changed any space on the board */
             if (old_board[row][column] !== board[row][column]){
                 let graphic = "";
@@ -361,6 +371,8 @@ socket.on('game_update',(payload) =>{
             }
         }
     }
+    $('#whitesum').html(whitesum);
+    $('#blacksum').html(blacksum);
     old_board = board;
 })
 
@@ -375,7 +387,30 @@ socket.on('play_token_response',(payload) =>{
     }
 })
 
-/* Request to join the chat room  using jqery*/
+socket.on('game_over',(payload) =>{
+    if ((typeof payload == 'undefined') || (payload === null)){
+        console.log('Server did not send a payload');
+        return;
+    }
+    if (payload.result === 'fail'){
+        console.log(payload.message)
+        return;
+    }
+
+    /* Announce with a button to lobby */
+    let nodeA = $("<div id='game_over'></div>");
+    let nodeB = $("<h1>Game Over</h1>");
+    let nodeC = $("<h2>" + payload.who_won + " won!</h2>");
+    let nodeD = $("<a href='lobby.html?username=" + username + "' class='btn btn-lg btn-success' role='button'>Return to Lobby</a>");
+    nodeA.append(nodeB);
+    nodeA.append(nodeC);
+    nodeA.append(nodeD);
+    nodeA.hide();
+    $('#game_over').replaceWith(nodeA);
+    nodeA.show("fade", 1000);
+})
+
+/* Request to join the chat room using jqery*/
 $( () => {
     let request = {
         room: chatRoom,
@@ -385,6 +420,8 @@ $( () => {
     socket.emit('join_room',request);
 
     $('#lobbyTitle').html(username + "'s Lobby");
+    
+    $('#quit').html("<a href='lobby.html?username=" + username + "' class='btn btn btn-danger' role='button'>Quit</a>");
 
     $('#chatMessage').keypress(function(e){
         let key = e.which;
