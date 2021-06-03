@@ -209,7 +209,7 @@ socket.on('player_disconnected',(payload) =>{
     }
 
 
-    let newHTML = '<p class=\'left_room_response\'>' +payload.username+' left the '+payload.room+'. (There are '+payload.count+' users in this room).</p>';
+    let newHTML = '<p class=\'left_room_response\'>' +payload.username+' left the chatroom. (There are '+payload.count+' users in this room).</p>';
     let newNode = $(newHTML);
     newNode.hide();
     $('#messages').prepend(newNode);
@@ -248,17 +248,18 @@ socket.on('send_chat_message_response',(payload) =>{
 })
 
 let old_board = [
-    ['?', '?', '?', '?', '?', '?', '?', '?'],
-    ['?', '?', '?', '?', '?', '?', '?', '?'],
-    ['?', '?', '?', '?', '?', '?', '?', '?'],
-    ['?', '?', '?', '?', '?', '?', '?', '?'],
-    ['?', '?', '?', '?', '?', '?', '?', '?'],
-    ['?', '?', '?', '?', '?', '?', '?', '?'],
-    ['?', '?', '?', '?', '?', '?', '?', '?'],
-    ['?', '?', '?', '?', '?', '?', '?', '?']
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '],
+    [' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ']
 ];
 
 let my_color = "";
+let interval_timer;
 
 socket.on('game_update',(payload) =>{
     if ((typeof payload == 'undefined') || (payload === null)){
@@ -325,15 +326,15 @@ socket.on('game_update',(payload) =>{
             if (old_board[row][column] !== board[row][column]){
                 let graphic = "";
                 let altTag = "";
-                if ((old_board[row][column] === '?') && (board[row][column] === ' ')){
+                if ((old_board[row][column] === ' ') && (board[row][column] === ' ')){
                 graphic = 'kyfo-transparent-empty.gif';
                 altTag = 'empty space';
                 }
-                else if ((old_board[row][column] === '?') && (board[row][column] === 'w')){
+                else if ((old_board[row][column] === ' ') && (board[row][column] === 'w')){
                     graphic = 'kyfo-empty_to_white.gif';
                     altTag = 'white token';
                 }
-                else if ((old_board[row][column] === '?') && (board[row][column] === 'b')){
+                else if ((old_board[row][column] === ' ') && (board[row][column] === 'b')){
                     graphic = 'kyfo-empty_to_black.gif';
                     altTag = 'black token';
                 }
@@ -389,6 +390,32 @@ socket.on('game_update',(payload) =>{
             }
         }
     }
+
+    clearInterval(interval_timer)
+    interval_timer = setInterval(((last_time) => {
+        return(() => {
+            let d = new Date();
+            let elapsed_m = d.getTime() - last_time;
+            let minutes = Math.floor(elapsed_m / (60 * 1000));
+            let seconds = Math.floor((elapsed_m % (60 * 1000))/ 1000);
+            let total = minutes * 60 + seconds;
+            if (total > 100){
+                total = 100;
+            }
+            $('#elapsed').css('width', total + '%').attr('aria-valuenow', total);
+            let timestring = '' + seconds;
+            timestring = timestring.padStart(2,'0');
+            timestring = minutes + ':' + timestring
+            if (total < 100){
+                $('#elapsed').html(timestring);
+            }
+            else {
+                $('#elapsed').html("Pleasure and action make the hours seem short - you are out of time");
+            }
+        })
+    })(payload.game.last_move_time)
+        , 1000);
+
     $('#whitesum').html(whitesum);
     $('#blacksum').html(blacksum);
     old_board = board;
