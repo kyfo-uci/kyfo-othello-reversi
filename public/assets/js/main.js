@@ -288,7 +288,25 @@ socket.on('game_update',(payload) =>{
         return;
     }
 
-    $('#my_color').html('<h3 id="my_color">I am ' + my_color + '</h3');
+    if( my_color === 'white'){
+        $('#my_color').html('<h3 id="my_color">You are worthy Othello, an honourable murderer.</h3>');
+    }
+    else if( my_color === 'black'){
+        $('#my_color').html('<h3 id="my_color">You are honest Iago, a villain.</h3>');
+    }
+    else {
+        $('#my_color').html('<h3 id="my_color">You must be an audience member, get off the stage!</h3>');
+    }
+
+    if( payload.game.whose_turn === 'white'){
+        $('#my_color').append('<h4>It is Othello\'s turn</h4>');
+    }
+    else if( payload.game.whose_turn === 'black'){
+        $('#my_color').append('<h4>It is Iago\'s turn</h4>');
+    }
+    else {
+        $('#my_color').append('<h4>It doth: not knowing whose turn that thus errs</h4>');
+    }
 
     let whitesum = 0;
     let blacksum = 0;
@@ -382,7 +400,8 @@ socket.on('play_token_response',(payload) =>{
         return;
     }
     if (payload.result === 'fail'){
-        console.log(payload.message)
+        console.log(payload.message);
+        alert(payload.message);
         return;
     }
 })
