@@ -290,7 +290,7 @@ socket.on('game_update',(payload) =>{
     }
 
     if( my_color === 'white'){
-        $('#my_color').html('<h3 id="my_color">You are worthy Othello, an honourable murderer.</h3>');
+        $('#my_color').html('<h3 id="my_color">You are worthy Othello, a murderer.</h3>');
     }
     else if( my_color === 'black'){
         $('#my_color').html('<h3 id="my_color">You are honest Iago, a villain.</h3>');
