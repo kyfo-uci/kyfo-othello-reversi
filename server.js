@@ -842,7 +842,7 @@ function send_game_update(socket, game_id, message){
     /* Check if the game is over */
     let legal_moves = 0;
     let whitesum = 0;
-    let blacksum =0;
+    let blacksum = 0;
     
     for (let row = 0; row < 8; row++) {
         for (let column = 0; column < 8; column++) {
@@ -852,18 +852,18 @@ function send_game_update(socket, game_id, message){
             if (games[game_id].board[row][column] === 'w'){
                 whitesum++;  
             }
-            if (games[game_id].board[row][column] === 'b '){
+            if (games[game_id].board[row][column] === 'b'){
                 blacksum++;  
             }
         }
     }
     if (legal_moves === 0) {
-        let winner = 'Tie Game';
+        let winner = 'No one';
         if (whitesum > blacksum){
-            winner = 'white';
+            winner = 'Othello';
         }
         if (whitesum < blacksum){
-            winner = 'black';
+            winner = 'Iago';
         }
 
 

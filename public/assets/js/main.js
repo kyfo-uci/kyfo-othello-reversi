@@ -300,10 +300,11 @@ socket.on('game_update',(payload) =>{
     }
 
     if( payload.game.whose_turn === 'white'){
-        $('#my_color').append('<h4>It is Othello\'s turn</h4>');
+        $('#my_color').append('<h4>My lord, Othello! Take thy turn!</h4>');
+        //$('#my_color').append('<h4>It is Othello\'s turn</h4>');
     }
     else if( payload.game.whose_turn === 'black'){
-        $('#my_color').append('<h4>It is Iago\'s turn</h4>');
+        $('#my_color').append('<h4>What dost thou PLAY, Iago?</h4>');
     }
     else {
         $('#my_color').append('<h4>It doth: not knowing whose turn that thus errs</h4>');
