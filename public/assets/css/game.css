@@ -53,3 +53,7 @@ td.hovered_over:hover{
 .btn-primary{
   background-color: #4A8D84;
 }
+
+.progress {
+  max-width: 527px;
+}
